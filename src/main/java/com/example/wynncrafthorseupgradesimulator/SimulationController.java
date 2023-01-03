@@ -1,25 +1,9 @@
 package com.example.wynncrafthorseupgradesimulator;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-import java.io.IOException;
-
-public class HelloApplication extends Application {
+public class SimulationController {
 
     static int purchasedHorses = 0;
-    static int counter = 0;
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
-    }
+    static int totalPurchasedHorses = 0;
 
     public static void main(String[] args) {
         // 20% Higher
@@ -29,10 +13,14 @@ public class HelloApplication extends Application {
         // Tiers: Brown, Black, Chestnut, White
 
 //        launch();
-        System.out.println("Loading...");
-        getWhiteHorse();
-        System.out.println("Horses Purchased: " + purchasedHorses);
-        System.out.println(counter);
+        for(int i = 0; i < 1000000; i++) {
+            getWhiteHorse();
+            if(i % 100000 == 0) {
+                System.out.println( i/10000 + "%");
+            }
+        }
+        System.out.println("100%");
+        System.out.println("Average Horses per White Horse:" + totalPurchasedHorses/1000000);
     }
 
     public static void getWhiteHorse() {
@@ -45,22 +33,25 @@ public class HelloApplication extends Application {
             getChestnutHorse(false);
             if(rng2 > .8) {
                 currentTier++;
-                System.out.println("Higher Tier (Chestnut -> White)");
+                //System.out.println("Higher Tier (Chestnut -> White)");
             }
             else if(rng2 < .3) {
-                System.out.println("Lower Tier (Chesnut -> Black)");
+                //System.out.println("Lower Tier (Chesnut -> Black)");
                 getChestnutHorse(true);
-                System.out.println(purchasedHorses);
+                //System.out.println(purchasedHorses);
             }
             else {
-                System.out.println("Same Tier (Chestnut -> Chestnut)");
+                //System.out.println("Same Tier (Chestnut -> Chestnut)");
             }
+
+            totalPurchasedHorses += purchasedHorses;
+            purchasedHorses = 0;
+
         }
     } // end getWhiteHorse()
 
     public static void getChestnutHorse(boolean hasBlack) {
         int currentTier = 2;
-        counter++;
         if(hasBlack == false) {
             getBlackHorse();
         }
@@ -70,16 +61,16 @@ public class HelloApplication extends Application {
             getBlackHorse();
             if(rng1 > .8) {
                 currentTier++;
-                System.out.println("Higher Tier (Black -> Chestnut)");
+                //System.out.println("Higher Tier (Black -> Chestnut)");
             }
             else if(rng1 < .3) {
-                System.out.println("Lower Tier (Black -> Brown)");
+                //System.out.println("Lower Tier (Black -> Brown)");
                 getBlackHorse();
                 purchasedHorses--;
-                System.out.println(purchasedHorses);
+                //System.out.println(purchasedHorses);
             }
             else {
-                System.out.println("Same Tier (Black -> Black)");
+                //System.out.println("Same Tier (Black -> Black)");
             }
         }
     } // end getChestnutHorse()
@@ -87,20 +78,19 @@ public class HelloApplication extends Application {
     public static void getBlackHorse() {
         int currentTier = 1;
         purchasedHorses++; // Initial purchase
-        System.out.println(purchasedHorses);
+        //System.out.println(purchasedHorses);
 
         while(!(currentTier == 2)) {
             double rng = Math.random();
             purchasedHorses++;
-            System.out.println(purchasedHorses);
+            //System.out.println(purchasedHorses);
             if(rng > .8) {
                 currentTier++;
-                System.out.println("Higher Tier (Brown -> Black)");
+                //System.out.println("Higher Tier (Brown -> Black)");
             }
             else {
-                System.out.println("Same/Lower Tier (Brown -> Brown)");
+                //System.out.println("Same/Lower Tier (Brown -> Brown)");
             }
         }
     } // end getBlackHorse()
-
 }
